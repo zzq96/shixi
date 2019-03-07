@@ -3,9 +3,9 @@ package com.view;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -14,62 +14,56 @@ import javax.swing.JTextField;
 
 import com.util.JDBCUtil;
 
-public class LoginFrame extends JFrame  implements ActionListener{
+/**
+ * 用户管理话框
+ * @author Administrator
+ *
+ */
+public class UserEditDialog extends JDialog  implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		//事件处理代码写在此处。。
 		System.out.println("点击了按钮");
 		//拿到文本中的用户名:调用JtextFiled的getText()方法
-		String userName =  jtfUserName.getText();
-		System.out.println("用户名为:"+userName);
-		String pwd = jtfPwd.getText();
-		System.out.println("密码为:"+pwd);
-		
-		
-		
-		//插入数据操作代码
-		String sql = "select * from tbl_user where loginName='"+userName+"' and loginPwd ='"+pwd+"'";
-		
-		ResultSet rs;
+		String id =  jtfNumber.getText();//获得编号
+		String name = jtfName.getText();//姓名
+		String sex = jtfSex.getText();//性别
+		String sql = "update tbl_user set name='"+name+"' ,sex='"+sex+"' where id='"+id+"' ";
 		try {
-			rs = JDBCUtil.query(sql);
-			boolean flag = false;//
-			while(rs.next()) {
-				//如果执行到此代码中（循环中） 表示以上SQL在数据库中找到了对应的数据，我们也可以认为用户输入用户名密码是正确的
-				flag =true;
-			}
-			
-			//如输入的用户为admin,密码为123456，则认为登录成功
-			if (flag==true) {  //"admin".equals(userName) && "123456".contentEquals(pwd)
-				System.out.println("用户名密码正确");
-				//关闭当前登录窗体(调用dispolse()方法)，创建一新的窗体
-				super.dispose();
-				//创建新窗体
-				MainFrame mf = new MainFrame();//打开了新界面
-			}else {
-				JOptionPane.showMessageDialog(null, "用户名或密码错误");//弹出确认对话框
-			}
+			int res = JDBCUtil.inserOrUpdateOrDelete(sql);
+			userManagerDialog.initTableData();
+			JOptionPane.showMessageDialog(null, "修改成功");
+			this.dispose();//关闭当前的界面
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "系统错误，请稍候再试");
+			JOptionPane.showMessageDialog(null, "修改失败，系统错误");
 		}
+		
+		
 	}
 	
 	JButton jbOK = new JButton("确定");//表示创建一个按钮对象
-	JLabel jlbUserName = new JLabel("用户名:");
-	JTextField jtfUserName = new JTextField("admin");	
+	JLabel jlbNumber = new JLabel("编号:");
+	JTextField jtfNumber = new JTextField();	
 	
-	JLabel jlbPwd = new JLabel("密   码:");
-	JPasswordField jtfPwd = new JPasswordField("123456");	
+	JLabel jlbName = new JLabel("姓名:");
+	JTextField jtfName = new JTextField();
+	
+	JLabel jlbSex = new JLabel("性别");
+	JTextField jtfSex = new JTextField();
 	
 	
-	public LoginFrame() {//构造方法
+	UserManagerDialog userManagerDialog ;
+	
+	public UserEditDialog(UserManagerDialog umd ) {//构造方法.表示创建UserEditDialog类对象时，必需传入一个UserManagerDialog对象
+		this.userManagerDialog = umd;//把参数赋给成员变量，目的是在其它方法中可以引用该参数
 		//调用JFrame中提供的方法设置窗体属性
 		//可以使用super.方式调用
 		super.setSize(400, 300);//创建400*300的窗体
-		super.setTitle("用户登录");
+		super.setTitle("修改用户信息");
 		//super.setLocation(600, 300);//设置窗体相对于屏幕左上角的偏移量
 		super.setLocationRelativeTo(null);//窗体居中显示
 		
@@ -81,18 +75,24 @@ public class LoginFrame extends JFrame  implements ActionListener{
 		//可以将container的布局管理器设置为空布局(调用setLayOut(null)),由组件自身调用setBounds(int x ,int y,int widht,int height)方法决定组件摆放在界面的哪个位置
 		container.setLayout(null);
 		jbOK.setBounds(250,200,120,40);//组件的位置及大小
-		jlbUserName.setBounds(20, 30, 80, 40);
-		jtfUserName.setBounds(100, 30, 220, 40);
 		
-		jlbPwd.setBounds(20, 80, 80, 40);
-		jtfPwd.setBounds(100, 80, 220, 40);
+		jlbNumber.setBounds(20, 30, 80, 40);
+		jtfNumber.setBounds(100, 30, 220, 40);
+		
+		jlbName.setBounds(20, 80, 80, 40);
+		jtfName.setBounds(100, 80, 220, 40);
+		
+		jlbSex.setBounds(20, 130, 80, 40);
+		jtfSex.setBounds(100, 130, 220, 40);
 		
 		//将组件加入到容器中
 		container.add(jbOK);
-		container.add(jlbUserName);
-		container.add(jtfUserName);
-		container.add(jlbPwd);
-		container.add(jtfPwd);		
+		container.add(jlbNumber);
+		container.add(jtfNumber);
+		container.add(jlbName);
+		container.add(jtfName);	
+		container.add(jlbSex);
+		container.add(jtfSex);
 		super.setVisible(true);//设置窗体可见
 		
 		//给组件注册监听器

@@ -19,13 +19,22 @@ public class MainFrame extends JFrame implements ActionListener{
 		System.out.println(button_text);
 		if("预定管理".equals(button_text))
 		{
-			YdManagerDialog yd_manager_dialog=new YdManagerDialog();
+			YdManagerDialog ydmanager_dialog=new YdManagerDialog();
+		}
+		else if("用户管理".equals(button_text)) {
+			try {
+				UserManagerDialog usermanager_dialog = new UserManagerDialog();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 	
 	JButton jb_gkkd = new JButton("顾客开单");
 	JButton jb_ydgl = new JButton("预定管理");
 	JButton jb_bkjz = new JButton("宾客结账");
+	JButton jb_yhgl = new JButton("用户管理");
 	JButton jb_center = new JButton("暂时放在中间部分的按钮");
 	
 	public MainFrame ()
@@ -42,6 +51,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		jp_north.add(jb_gkkd);
 		jp_north.add(jb_ydgl);
 		jp_north.add(jb_bkjz);
+		jp_north.add(jb_yhgl);
 		//jp_north.add(jb_center);
 		
 		container.add(jp_north,BorderLayout.NORTH);
@@ -50,6 +60,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		jb_gkkd.addActionListener(this);
 		jb_ydgl.addActionListener(this);
 		jb_bkjz.addActionListener(this);
+		jb_yhgl.addActionListener(this);
 		
 		this.setVisible(true);
 	}

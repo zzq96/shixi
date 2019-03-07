@@ -14,14 +14,25 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//点击预定管理按钮，弹出YdManagerDialog界面
-		YdManagerDialog yd = new YdManagerDialog();
+		String btnText = e.getActionCommand();
+		
+		if ("用户管理".equals(btnText)) {
+			///弹出用户管理界面
+			UserManagerDialog ud = new UserManagerDialog();
+		}else if ("预定管理".equals(btnText)) {
+			//点击预定管理按钮，弹出YdManagerDialog界面
+			YdManagerDialog yd = new YdManagerDialog();
+		}
+	
 	}
 	
 	
 	JButton jbGKKD = new JButton("顾客开单");
 	JButton jbYDGL = new JButton("预定管理");
 	JButton jbBKJZ = new JButton("宾客结账");
+
+	JButton jbYHGL = new JButton("用户管理");
+	
 	JButton jbCenter = new JButton("暂时放在中间部分的按钮");
 	
 	public MainFrame() {
@@ -40,6 +51,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		jpNorth.add(jbGKKD);
 		jpNorth.add(jbYDGL);
 		jpNorth.add(jbBKJZ);
+		jpNorth.add(jbYHGL);
 		
 		
 		//将中中间容器添加到container中
@@ -51,6 +63,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 		//注册监听器
 		jbYDGL.addActionListener(this);
+		jbYHGL.addActionListener(this);
 	}
 
 

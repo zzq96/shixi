@@ -1,19 +1,23 @@
 package zzq_shixi.util;
 
 import java.sql.ResultSet;
+import java.util.Vector;
 
 public class JDBCUtilTest {
 	public static void main(String args[]) throws Exception {
-		String sql1 = "Select * from tbl_user";
-		ResultSet res1=JDBCUtil.Query(sql1);
+		String sql = "Select * from tbl_user";
+		Vector res=JDBCUtil.QueryReturnVector(sql);
 		
-		while(res1.next()) {
-			System.out.println("±àºÅ:"+res1.getString("id")+",ÐÕÃû:"+res1.getString("LoginName"));
+		for(int i=0;i<res.size();i++) {
+			for(int j=0;j<((Vector) res.get(i)).size();j++){
+				System.out.println(((Vector) res.get(i)).get(j)+" ");
+			}
+			System.out.println();
 		}
 		
-		String sql2 = "insert into tbl_user (id,LoginName,LoginPwd,regDate) values('11','zzh','12312',now())";
-		int res2=JDBCUtil.Change(sql2);
-		System.out.println("Ó°Ïì£º"+res2);
+//		String sql2 = "insert into tbl_user (id,LoginName,LoginPwd,regDate) values('11','zzh','12312',now())";
+//		int res2=JDBCUtil.Change(sql2);
+//		System.out.println("Ó°Ïì£º"+res2);
 
 	}
 }

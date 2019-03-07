@@ -10,8 +10,8 @@ public class JdbcDemo1 {
 	public static void main(String[] args) throws Exception {
 		
 		////1加载驱动
+		Class.forName("com.mysql.jdbc.Driver");
 		
-	
 		//2用DriverManager驱动管理类获与数据库的连接对象connection
 			//此方法的三个参数分别表示数据库连接的url,用户名，密码
 		String url = "jdbc:mysql://127.0.0.1:3306/ktvmanager";// 127.0.0.1表示mysql数据库所在的电脑Ip   3306表示数据库的监听端口号

@@ -1,8 +1,10 @@
 package zzq_shixi.view;
 import java.awt.BorderLayout;
+import zzq_shixi.util.JDBCUtil;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 
 import javax.swing.*;
 public class LoginFrame extends JFrame implements ActionListener{
@@ -13,24 +15,36 @@ public class LoginFrame extends JFrame implements ActionListener{
 		
 		String user_name=jtf_user_name.getText();
 		String pwd=jtf_pwd.getText();
-		if("root".equals(user_name) && "123456".equals(pwd))
-		{
+		//查询数据库的语句
+		String sql = "select * from tbl_user where LoginName='"+user_name+"' and LoginPwd='"+pwd+"'";
+//		The type of the expression must be an array type but it resolved to Vector
+		ResultSet res = null;
+		try {
 			
-			System.out.println("密码正确");
-			this.dispose();
-			MainFrame mf=new MainFrame();
-		}
-		else 
-		{
-			JOptionPane.showMessageDialog(null, "用户名和密码错误");
-		}
+			res = JDBCUtil.QueryReturnResultSet(sql);//得到查询结果的数量
+		
+			if(res.next())
+			{
+			
+				System.out.println("密码正确");
+				this.dispose();
+				MainFrame mf=new MainFrame();
+			}
+			else 
+			{
+				JOptionPane.showMessageDialog(null, "用户名和密码错误");
+			} 
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		
 	}
 	//一些组件
 	JLabel jl_user_name=new JLabel("用户名");
 	JTextField jtf_user_name=new JTextField();
 	JLabel jl_pwd=new JLabel("密码");
-	JTextField jtf_pwd=new JTextField();
+	JPasswordField jtf_pwd=new JPasswordField();
 	JButton jb_ok=new JButton("确认");
 	
 	public LoginFrame(){
@@ -57,7 +71,7 @@ public class LoginFrame extends JFrame implements ActionListener{
 		container.add(jtf_pwd);
 		container.add(jb_ok);
 		
-		jtf_user_name.setText("root");
+		jtf_user_name.setText("admin");
 		jtf_pwd.setText("123456");
 		
 		jb_ok.addActionListener(this);
